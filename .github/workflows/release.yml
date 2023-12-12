@@ -33,7 +33,7 @@ jobs:
             for arch in ${{ matrix.goarch }}; do
               for path in ${{ matrix.cmdpath }}; do
                 echo "Building violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.bin..."
-                env GOOS=$os GOARCH=$arch go build -o violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.bin ./cmd/${path}/
+                env GOOS=$os GOARCH=$arch go build -ldflags="-s -w" -o violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.bin ./cmd/${path}/
                 echo "Upx brute violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.bin..."
                 upx --brute violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.bin
                 echo "Tar violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.tar.xz..."
