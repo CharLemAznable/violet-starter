@@ -1,0 +1,46 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, darwin]
+        goarch: [amd64]
+        cmdpath: [etcd, local]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.20'
+
+      - name: Install UPX
+        run: sudo apt-get install upx-ucl
+
+      - name: Install dependencies
+        run: go get -t ./...
+
+      - name: Build and Upload
+        run: |
+          for os in ${{ matrix.goos }}; do
+            for arch in ${{ matrix.goarch }}; do
+              for path in ${{ matrix.cmdpath }}; do
+                echo "Building violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.bin..."
+                env GOOS=$os GOARCH=$arch go build -o violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.bin ./cmd/${path}/main.go
+                echo "Upx brute violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.bin..."
+                upx --brute violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.bin
+                echo "Tar violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.tar.xz..."
+                chmod a+x violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.bin
+                tar -cvJf violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.tar.xz violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.bin
+                echo "Uploading violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.tar.xz..."
+                curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Content-Type: application/octet-stream" --data-binary @violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.tar.xz "https://uploads.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets?name=violet-${path}.${{ github.event.release.tag_name }}.${os}.${arch}.tar.xz"
+              done
+            done
+          done
