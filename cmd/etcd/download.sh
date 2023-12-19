@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-violet_version="v0.1.0"
+violet_version="v0.2.0"
 
 curl -LJO https://github.com/CharLemAznable/violet-starter/releases/download/$violet_version/violet-etcd.$violet_version.linux.amd64.tar.xz
 

@@ -4,15 +4,15 @@ go 1.20
 
 require (
 	github.com/BurntSushi/toml v1.3.2
-	github.com/CharLemAznable/violet v0.1.1
+	github.com/CharLemAznable/violet v0.2.0
 	go.etcd.io/etcd/client/pkg/v3 v3.5.11
 	go.etcd.io/etcd/client/v3 v3.5.11
 )
 
 require (
-	github.com/CharLemAznable/ge v0.1.0 // indirect
-	github.com/CharLemAznable/pubsub v0.1.0 // indirect
-	github.com/CharLemAznable/resilience4go v0.6.0 // indirect
+	github.com/CharLemAznable/ge v0.2.0 // indirect
+	github.com/CharLemAznable/pubsub v0.2.0 // indirect
+	github.com/CharLemAznable/resilience4go v0.7.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.2.0 // indirect
 	github.com/coreos/go-semver v0.3.0 // indirect
