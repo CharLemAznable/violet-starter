@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-violet_version="v0.2.0"
+violet_version="v0.3.0"
 
 curl -LJO https://github.com/CharLemAznable/violet-starter/releases/download/$violet_version/violet-local.$violet_version.linux.amd64.tar.xz
 
